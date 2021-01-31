@@ -1,7 +1,11 @@
-# Install Lingua Libre
+# Operations
 
+!!! This README is a work in progress !!!
 
-This README is a work in progress
+This repository contains configuration files and scripts regarding *Lingua Libre*'s installation and various day-to-day maintenance procedures.
+This README file serves as a reference sheet and documentation on these matters.
+
+## Installing Lingua Libre
 
 ### Requirements
 - Debian 8+
@@ -15,6 +19,7 @@ Get the `deploy.sh` script and put it where the mediawiki installation should be
 import db backup
 import files backup
 
+## Maintenance scripts
 
 ### Details
 - `crontab` : 1) Run maintenance scripts on the production instance; 2) Run maintenance scripts on the v2 instance; 3) reload nginx and eventually renew the SSL certificates.
