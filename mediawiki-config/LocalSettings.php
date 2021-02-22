@@ -298,6 +298,7 @@ $wgRecordWizardConfig['properties']['qualifier'] = 'P18';
 $wgRecordWizardConfig['properties']['wikipediaTitle'] = 'P19';
 $wgRecordWizardConfig['properties']['wiktionaryEntry'] = 'P20';
 $wgRecordWizardConfig['properties']['mediaType'] = 'P24';
+$wgRecordWizardConfig['properties']['wikivoyageTitle'] = 'P25';
 
 $wgRecordWizardConfig['items']['genderMale'] = 'Q16';
 $wgRecordWizardConfig['items']['genderFemale'] = 'Q17';
