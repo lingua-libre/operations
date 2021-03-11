@@ -176,6 +176,9 @@ $wgHooks['SkinTemplateOutputPageBeforeExec'][] = function ( $sk, &$tpl ) {
         return true;
 };
 
+# Enable user custom js and css
+$wgAllowUserJs = true;
+$wgAllowUserCss = true;
 
 # Enabled extensions.
 # The following extensions were automatically enabled:
