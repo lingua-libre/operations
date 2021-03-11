@@ -146,7 +146,6 @@ $wgDefaultSkin = "bluell";
 
 # Enabled skins.
 # The following skins were automatically enabled:
-wfLoadSkin( 'Vector' );
 wfLoadSkin( 'BlueLL' );
 
 # Change some footer links
