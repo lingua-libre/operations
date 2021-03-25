@@ -334,7 +334,7 @@ $wgDefaultUserOptions['usenewrc'] = 1;
 wfLoadExtension( 'LocalisationUpdate' );
 $wgLocalisationUpdateDirectory = "$IP/cache";
 
-require_once "$IP/extensions/Translate/Translate.php";
+wfLoadExtension( 'Translate' );
 $wgGroupPermissions['user']['translate'] = true;
 $wgGroupPermissions['user']['translate-messagereview'] = true;
 $wgGroupPermissions['user']['translate-groupreview'] = true;
