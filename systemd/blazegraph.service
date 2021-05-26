@@ -1,0 +1,16 @@
+[Unit]
+Description=Run Blazegraph
+Wants=network-pre.target local-fs.target
+Requires=network-pre.target local-fs.target
+
+[Service]
+Type=simple
+ExecStart=/opt/wikidata-query-rdf/dist/target/service-0.3.70-SNAPSHOT/runBlazegraph.sh
+ProtectSystem=true
+ProtectHome=true
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+RestrictRealtime=yes
+
+[Install]
+WantedBy=basic.target
