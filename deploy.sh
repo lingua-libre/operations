@@ -98,3 +98,15 @@ cd ../
 php maintenance/update.php
 php extensions/Wikibase/lib/maintenance/populateSitesTable.php
 php extensions/Wikibase/repo/maintenance/rebuildItemsPerSite.php
+
+# Install backup script
+mkdir -p /usr/local/lib/backup /usr/local/lib/systemd/system
+wget https://raw.githubusercontent.com/lingua-libre/operations/master/backup/backup-lingualibre -P /usr/local/lib/backup/
+wget https://raw.githubusercontent.com/lingua-libre/operations/master/systemd/backup-lingualibre.service -P /usr/local/lib/systemd/system/
+wget https://raw.githubusercontent.com/lingua-libre/operations/master/systemd/backup-lingualibre.timer -P /usr/local/lib/systemd/system/
+echo '* Please configure the MySQL user used for backups, and declare it in /usr/local/lib/backup/backup-lingualibre'
+echo '  (parameters MYSQL_HOST, MYSQL_USER, and MYSQL_PASS).'
+echo '* The hour of the daily backup can be configured in /usr/local/lib/systemd/system/backup-lingualibre.timer.'
+echo '* Then launch the daily backup with:'
+echo '    sudo systemctl start backup-lingualibre.timer'
+echo '    sudo systemctl enable backup-lingualibre.timer'

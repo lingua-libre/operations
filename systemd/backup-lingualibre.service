@@ -1,0 +1,9 @@
+[Unit]
+Description=LinguaLibre backup
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/lib/backup/backup-lingualibre
+Nice=19
+IOSchedulingClass=idle
+CPUSchedulingPolicy=idle

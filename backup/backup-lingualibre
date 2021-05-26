@@ -1,0 +1,31 @@
+#!/bin/sh
+# Create a backup of all MariaDB databases on a daily basis.
+#
+# Files are named $BACKUP_NAME-YYYY-MM-DD-daily.sql.gz.
+# The last file is hardlinked as $BACKUP_NAME-daily.sql.gz so that it can be easily downloaded.
+# 
+# Author: Sébastien Beyou ~ Seb35
+# Licence: WTFPL 2.0
+
+BACKUP_NAME="lingualibre"
+MYSQL_HOST="localhost"
+MYSQL_USER=""
+MYSQL_PASS=""
+BACKUP_NB_DAYS="7" # keep N+1 dumps
+BACKUP_DIR="/srv/backups"
+
+
+# Prepare
+DATE=$(date +"%Y-%m-%d")
+umask 0137
+mkdir -m 2744 -p "$BACKUP_DIR"
+chgrp backup "$BACKUP_DIR"
+
+# Backup database of the day
+mysqldump --host="$MYSQL_HOST" --user="$MYSQL_USER" --password="$MYSQL_PASS" --insert-ignore --events --single-transaction --quick --all-databases|gzip -4 --rsyncable > "$BACKUP_DIR/$BACKUP_NAME-$DATE-daily.sql.gz"
+
+# Name a file $BACKUP_NAME-daily.sql.gz
+ln -f "$BACKUP_DIR/$BACKUP_NAME-$DATE-daily.sql.gz" "$BACKUP_DIR/$BACKUP_NAME-daily.sql.gz"
+
+# Delete the oldest days
+find "$BACKUP_DIR/$BACKUP_NAME"-*-daily.sql.gz -daystart -mtime "+$BACKUP_NB_DAYS" -delete

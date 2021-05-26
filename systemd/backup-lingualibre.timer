@@ -1,0 +1,8 @@
+[Unit]
+Description=Run LinguaLibre backups daily
+
+[Timer]
+OnCalendar=*-*-* 04:28:00
+
+[Install]
+WantedBy=timers.target
