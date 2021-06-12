@@ -269,6 +269,8 @@ if($isBeta) {
     $wgUpload2CommonsApiUrl = 'https://commons.wikimedia.org/w/api.php';
 }
 
+# Namespaces
+
 # Create the "list" namespace
 define('NS_LIST', 142);
 define('NS_LIST_TALK', 143);
@@ -278,6 +280,10 @@ $wgNamespacesWithSubpages[NS_LIST] = true;
 
 # Add a "DataViz" namespace alias, to manage old links in the wild to this removed namespace
 $wgNamespaceAliases['DataViz'] = NS_PROJECT;
+
+# Additional aliases
+$wgNamespaceAliases['LL'] = NS_PROJECT;
+$wgNamespaceAliases['LL_talk'] = NS_PROJECT_TALK;
 
 # Activate the RecordingExtension
 wfLoadExtension( 'RecordWizard' );
