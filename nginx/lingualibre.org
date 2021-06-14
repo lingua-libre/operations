@@ -1,26 +1,91 @@
 server {
+
+    listen 80;
+    listen [::]:80;
+    server_name lingualibre.org;
+
+    location / {
+        return 302 https://$host$request_uri;
+    }
+
+    location /.well-known {
+        root /var/www/lingualibre.org;
+        try_files $uri =404;
+    }
+}
+
+server {
+
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
-    server_name lingualibre.org www.lingualibre.org;
+    server_name lingualibre.org;
 
     ssl_certificate /etc/letsencrypt/live/lingualibre.org/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/lingualibre.org/privkey.pem;
 
-    root /var/www/lingualibre.org/;
+    root /opt/mediawiki/1.35;
 
     client_max_body_size 5m;
     client_body_timeout 60;
+
+    location ~ ^/images/ {
+        root /var/www/lingualibre.org;
+        try_files $uri =404;
+    }
+
+    location ~ ^/demo/ {
+        root /opt/LinguaRecorder;
+        try_files $uri =404;
+    }
 
     location / {
         try_files $uri @rewrite;
     }
 
     location =/robots.txt {
-        alias /var/robots-www/lingualibre.org/robots.txt;
+        alias /var/www/lingualibre.org/robots.txt;
     }
 
-    location ~ ^/(bigdata|datasets) {
-        proxy_pass http://lingualibre.wikimedia.fr:9000;
+    location /datasets/ {
+        proxy_pass http://10.42.3.50:9000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        break;
+    }
+
+    location ~ ^/bigdata/ {
+        if ($http_cookie ~* "lingua_libre_v2_session=([^;]+)(?:;|$)") {
+            rewrite /(.*) /auth/$1 last;
+        }
+        send_timeout 65s;
+        proxy_read_timeout 60s;
+        proxy_pass http://10.42.3.50:9000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        break;
+    }
+
+    location = /sparql {
+        send_timeout 65s;
+        proxy_read_timeout 60s;
+        proxy_pass http://10.42.3.50:9000/bigdata/namespace/wdq;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        break;
+    }
+
+    location ~ ^/auth/bigdata/ {
+        internal;
+        send_timeout 305s;
+        proxy_read_timeout 300s;
+        rewrite /auth/(.*) /$1 break;
+        proxy_pass http://10.42.3.50:9000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -29,12 +94,17 @@ server {
     }
 
     location @rewrite {
-        rewrite ^/entity/(.*)$ /wiki/$1 permanent;
+        rewrite ^/entity/(Q\d+)$ /wiki/$1 permanent;
+        rewrite ^/entity/(P\d+)$ /wiki/Property:$1 permanent;
         rewrite ^/$ /wiki/ permanent;
         rewrite ^/(wiki/)?(.*)$ /index.php?title=$1&$args;
     }
 
-    location ^~ /maintenance/ {
+    #location = /w/api.php {
+    #    rewrite ^/w/api\.php$ /api.php$is_args$args redirect;
+    #}
+
+    location /maintenance/ {
         return 403;
     }
 
@@ -67,7 +137,7 @@ server {
         # Mitigate https://httpoxy.org/ vulnerabilities
         fastcgi_param HTTP_PROXY "";
 
-        fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
         fastcgi_index index.php;
 
         # include the fastcgi_param setting
@@ -78,6 +148,11 @@ server {
         # i.e. /etc/nginx/fastcgi_params or in the parent contexts,
         # please comment off following line:
         fastcgi_param  SCRIPT_FILENAME   $document_root$fastcgi_script_name;
+    }
+
+    location /.well-known {
+        root /var/www/lingualibre.org;
+        try_files $uri =404;
     }
 
     error_log /var/log/nginx/lingualibre_error.log;
