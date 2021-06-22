@@ -27,6 +27,21 @@ server {
 
     client_max_body_size 5m;
     client_body_timeout 60;
+    
+    # Gzip compression
+    gzip on;
+    gzip_min_length 1024;
+    gzip_types
+      text/plain
+      text/css
+      text/javascript
+      font/eot
+      font/otf
+      font/ttf
+      application/octet-stream
+      image/svg+xml;
+    gzip_vary on;
+    gzip_proxied any;
 
     location ~ ^/images/ {
         root /var/www/lingualibre.org;
