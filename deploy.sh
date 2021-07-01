@@ -72,19 +72,19 @@ cd ../
 # Use patched version of Wikibase (detail, no more useful from 1.36)
 cd Wikibase/
 sudo -u ${USER} git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/Wikibase refs/changes/28/664228/2
-sudo -u ${USER} git checkout FETCH_HEAD
+sudo -u ${USER} git cherry-pick FETCH_HEAD
 cd ../
 
 # Use patched version of InputBox (detail, no more useful from 1.37)
 cd InputBox/
 sudo -u ${USER} git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/InputBox refs/changes/34/683034/2
-sudo -u ${USER} git checkout FETCH_HEAD
+sudo -u ${USER} git cherry-pick FETCH_HEAD
 cd ../
 
 # Use patched version of MultimediaViewer (detail)
 cd MultimediaViewer/
 sudo -u ${USER} git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/MultimediaViewer refs/changes/39/683039/3
-sudo -u ${USER} git checkout FETCH_HEAD
+sudo -u ${USER} git cherry-pick FETCH_HEAD
 cd ../
 
 # Import submodules and install dependencies of Wikibase
