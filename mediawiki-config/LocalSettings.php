@@ -350,6 +350,8 @@ $wgGroupPermissions['sysop']['translate-manage'] = true;
 $wgTranslateDocumentationLanguageCode = 'qqq';
 $wgExtraLanguageNames['qqq'] = 'Message documentation';
 
+$wgGroupPermissions['translationadmin']['edit'] = true;
+
 wfLoadExtension( 'UniversalLanguageSelector' );
 $wgULSGeoService = false;
 
