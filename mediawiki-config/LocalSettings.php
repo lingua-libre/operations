@@ -347,6 +347,7 @@ $wgGroupPermissions['user']['translate-groupreview'] = true;
 $wgGroupPermissions['user']['translate-import'] = true;
 $wgGroupPermissions['sysop']['pagetranslation'] = true;
 $wgGroupPermissions['sysop']['translate-manage'] = true;
+$wgGroupPermissions['translationadmin']['pagetranslation'] = true;
 $wgGroupPermissions['translationadmin']['translate-manage'] = true;
 $wgTranslateDocumentationLanguageCode = 'qqq';
 $wgExtraLanguageNames['qqq'] = 'Message documentation';
