@@ -6,6 +6,7 @@ Requires=network-pre.target local-fs.target
 [Service]
 Type=simple
 ExecStart=/opt/wikidata-query-rdf/dist/target/service-0.3.70-SNAPSHOT/runUpdate.sh -n wdq -- --wikibaseUrl https://lingualibre.org --entityNamespaces 0,122 --conceptUri https://lingualibre.org --apiPath /api.php
+Restart=on-failure
 ProtectSystem=true
 ProtectHome=true
 ProtectKernelModules=yes
