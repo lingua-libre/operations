@@ -148,6 +148,18 @@ $wgDefaultSkin = "bluell";
 # The following skins were automatically enabled:
 wfLoadSkin( 'BlueLL' );
 
+/**
+ * Specify the names of skins that should not be presented in the list of
+ * available skins in user preferences.
+ *
+ * NOTE: This does not uninstall the skin, and it will still be accessible
+ * via the `useskin` query parameter. To uninstall a skin, remove its inclusion
+ * from LocalSettings.php.
+ *
+ * @see Skin::getAllowedSkins
+ */
+$wgSkipSkins = ['vector'];
+
 # Change some footer links
 $wgHooks['SkinTemplateOutputPageBeforeExec'][] = function ( $sk, &$tpl ) {
         # Add About Wikimedia France link
