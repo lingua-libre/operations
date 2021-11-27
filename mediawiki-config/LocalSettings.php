@@ -63,7 +63,7 @@ $wgFavicon = "$wgResourceBasePath/resources/assets/logo/lingualibre-favicon.ico"
 ## UPO means: this is also a user preference option
 
 $wgEnableEmail = false;
-$wgEnableUserEmail = true; # UPO
+$wgEnableUserEmail = false; # UPO
 
 $wgEmergencyContact = "contact@lingualibre.org";
 $wgPasswordSender = "contact@lingualibre.org";
