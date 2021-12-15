@@ -418,6 +418,9 @@ $wgExtraLanguageNames['shy-latn'] = 'Tacawit';
 # Raise limit for heavy jobs
 $wgMemoryLimit = '128M';
 
+# Apply temporary security mitigation (remove when updated to >=1.35.5; see CVE-2021-44857)
+$wgActions['mcrundo'] = false;
+$wgActions['mcrrestore'] = false;
 
 # Activate the debug toolbar; do not leave it in production!
 if($isBeta) {
