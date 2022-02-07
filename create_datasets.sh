@@ -25,6 +25,7 @@ query="?record prop:P2 entity:Q2 ;
   BIND( IF(BOUND(?qualif), CONCAT(' (', ?qualif, ')'), '') AS ?qualifstr )
   BIND(CONCAT(?langstr, '/', ?user, ?locutorstr, '/', ?transcription, ?qualifstr, '.wav') AS ?filename)
 "
+limit="LIMIT 50000"
 queryFilterRecent="FILTER( ?date > \"`date --rfc-3339=date --date=\"- 5 days\"`\"^^xsd:dateTime )."
 
 # Create (if it doesn't exist already) a temp folder for all the records we will download
@@ -34,13 +35,13 @@ mkdir -p  /tmp/datasets /tmp/datasets/raw/
 # We --forcedownload  the recently uploaded files only,
 # to get the newer version of those that have been updated since last run
 echo "--> Force the download of recent changes..."
-/usr/bin/python3.8 /home/www/CommonsDownloadTool/commons_download_tool.py --keep --sparqlurl https://lingualibre.org/bigdata/namespace/wdq/sparql --sparql "SELECT ?file ?filename WHERE { ${query} ${queryFilterRecent} }" --threads 4 --directory  /tmp/datasets/raw/ --forcedownload --nozip --fileformat ogg
+/usr/bin/python3.8 /home/www/CommonsDownloadTool/commons_download_tool.py --keep --sparqlurl https://lingualibre.org/bigdata/namespace/wdq/sparql --sparql "SELECT ?file ?filename WHERE { ${query} ${queryFilterRecent} }${limit}" --threads 4 --directory  /tmp/datasets/raw/ --forcedownload --nozip --fileformat ogg
 
 # Check that we have all the files (or download them) and zip everything
 # We could use zip directly (as the previous command also ensure we got every new files),
 # but by doing it this way deleted files on Lingua Libre won't be shipped even if cached.
 echo "--> [CANCELLED/PAUSED:] Download and package ALL sounds..."
-#     /usr/bin/python3.8 /home/www/CommonsDownloadTool/commons_download_tool.py --keep --sparqlurl https://lingualibre.org/bigdata/namespace/wdq/sparql --sparql "SELECT ?file ?filename WHERE { ${query} }" --threads 4 --directory  /tmp/datasets/raw/ --output "/tmp/datasets/lingualibre_full.zip" --fileformat ogg
+#     /usr/bin/python3.8 /home/www/CommonsDownloadTool/commons_download_tool.py --keep --sparqlurl https://lingualibre.org/bigdata/namespace/wdq/sparql --sparql "SELECT ?file ?filename WHERE { ${query} }${limit}" --threads 4 --directory  /tmp/datasets/raw/ --output "/tmp/datasets/lingualibre_full.zip" --fileformat ogg
 
 # Download and package each language individually
 echo "--> Download and package each language individually"
@@ -52,7 +53,7 @@ do
   qid=$(echo ${qidpath##*/} | cut -d'-' -f 1)
   if [[ $qid == Q* ]] ; then
     echo "--> Processing ${qid}..."
-    /usr/bin/python3.8 /home/www/CommonsDownloadTool/commons_download_tool.py --keep --sparqlurl https://lingualibre.org/bigdata/namespace/wdq/sparql --sparql "SELECT ?file ?filename WHERE { ${query} ?record prop:P4 entity:${qid}. }" --threads 4 --directory  /tmp/datasets/raw/ --output "/tmp/datasets/${qidpath##*/}.zip" --fileformat ogg
+    /usr/bin/python3.8 /home/www/CommonsDownloadTool/commons_download_tool.py --keep --sparqlurl https://lingualibre.org/bigdata/namespace/wdq/sparql --sparql "SELECT ?file ?filename WHERE { ${query} ?record prop:P4 entity:${qid}. }${limit}" --threads 4 --directory  /tmp/datasets/raw/ --output "/tmp/datasets/${qidpath##*/}.zip" --fileformat ogg
   fi
 done
 
