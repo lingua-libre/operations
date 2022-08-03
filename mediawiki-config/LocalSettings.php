@@ -137,8 +137,12 @@ $wgRightsIcon = "$wgResourceBasePath/resources/assets/licenses/cc-by-sa.png";
 # Path to the GNU diff3 utility. Used for conflict resolution.
 $wgDiff3 = "/usr/bin/diff3";
 
-# Disable annon editing
+# Permissions
+## Disable annon editing
 $wgGroupPermissions['*']['edit'] = false;
+## Enable revision hiding for sysops
+$wgGroupPermissions['sysop']['deletelogentry'] = true;
+$wgGroupPermissions['sysop']['deleterevision'] = true;
 
 ## Default skin: you can change the default skin. Use the internal symbolic
 ## names, ie 'vector', 'monobook':
